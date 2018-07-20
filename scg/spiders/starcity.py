@@ -22,19 +22,22 @@ class SimpleScrapper(scrapy.Spider):
         for item in items:
             name = item.css('.search_results_1 a::text').extract_first()
             if name:
-                expansion = (
-                    item.css('.search_results_2 a::text').extract_first().rstrip()
-                )
-                name = name.replace('\n', '')
-                price = item.css('.search_results_9::text').extract_first().replace('$', '')
-                price = float(price)
-                yield(dict(
-                    name=name,
-                    expansion=expansion,
-                    price=price,
-                    mxn_regular=price * 16,
-                    mxn_client=price * 15
-                ))
+                try:
+                    expansion = (
+                        item.css('.search_results_2 a::text').extract_first().rstrip()
+                    )
+                    name = name.replace('\n', '')
+                    price = item.css('.search_results_9::text').extract_first().replace('$', '')
+                    price = float(price)
+                    yield(dict(
+                        name=name,
+                        expansion=expansion,
+                        price=price,
+                        mxn_regular=price * 16,
+                        mxn_client=price * 15
+                    ))
+                except Exception as e:
+                    print("Card couldn't be processed")
         next_page_xpath = response.xpath('//*[@id="content"]/div[3]/a')[-1]
         next_page_text = next_page_xpath.css('::text').extract_first()
         if next_page_text == ' - Next>> ':
