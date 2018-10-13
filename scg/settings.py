@@ -13,6 +13,7 @@ BOT_NAME = 'scg'
 
 SPIDER_MODULES = ['scg.spiders']
 NEWSPIDER_MODULE = 'scg.spiders'
+LOG_LEVEL = 'INFO'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

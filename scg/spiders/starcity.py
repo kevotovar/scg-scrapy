@@ -6,11 +6,11 @@ class SimpleScrapper(scrapy.Spider):
 
     def start_requests(self):
         urls = [
-            'http://www.starcitygames.com/catalog/category/Explorers%20of%20Ixalan',
             'http://www.starcitygames.com/catalog/category/Rivals%20of%20Ixalan',
             'http://www.starcitygames.com/catalog/category/Dominaria',
             'http://www.starcitygames.com/catalog/category/Core%20Set%202019',
-            #'http://www.starcitygames.com/catalog/category/Guilds%20of%20Ravnica'
+            'http://www.starcitygames.com/catalog/category/Guilds%20of%20Ravnica'
+            'http://www.starcitygames.com/catalog/category/Ixalan'
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -29,7 +29,6 @@ class SimpleScrapper(scrapy.Spider):
                         id = item.css('.search_results_1 b a::attr(href)').extract_first().replace('http://www.starcitygames.com/catalog/magic_the_gathering/product/', '')
                         if '/' in id:
                             id = id.split('/')[0]
-                        print(id)
                         name = name.replace('\n', '')
                         price = item.css('.search_results_9::text').extract_first().replace('$', '')
                         price = float(price)
@@ -43,8 +42,7 @@ class SimpleScrapper(scrapy.Spider):
                         data['mxn_client'] = price * 16
                         yield(data)
                 except Exception as e:
-                    print(e)
-                    print("Card couldn't be processed")
+                    pass
         next_page_xpath = response.xpath('//*[@id="content"]/div[3]/a')[-1]
         next_page_text = next_page_xpath.css('::text').extract_first()
         if next_page_text == ' - Next>> ':
