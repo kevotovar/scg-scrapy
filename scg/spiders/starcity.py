@@ -9,8 +9,8 @@ class SimpleScrapper(scrapy.Spider):
             'http://www.starcitygames.com/catalog/category/Rivals%20of%20Ixalan',
             'http://www.starcitygames.com/catalog/category/Dominaria',
             'http://www.starcitygames.com/catalog/category/Core%20Set%202019',
-            'http://www.starcitygames.com/catalog/category/Guilds%20of%20Ravnica'
-            'http://www.starcitygames.com/catalog/category/Ixalan'
+            'http://www.starcitygames.com/catalog/category/Guilds%20of%20Ravnica',
+            'http://www.starcitygames.com/catalog/category/Ixalan',
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -40,6 +40,10 @@ class SimpleScrapper(scrapy.Spider):
                         data['price'] = price
                         data['mxn_regular'] = price * 17
                         data['mxn_client'] = price * 16
+                        data['width'] = 8.8
+                        data['height'] = .1
+                        data['length'] = 6.3
+                        data['weight'] = .001
                         yield(data)
                 except Exception as e:
                     pass
